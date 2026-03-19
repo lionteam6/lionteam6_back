@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>update</title>
+  </head>
+  <body>
+    <h1>Updating Post</h1>
+
+    <form action="{% url 'group_purchase:update_post' update_group_purchase.id %}" method="post">
+        {% csrf_token %}
+
+        <p>
+            제목 :
+            <input type="text" name="title" value="{{ update_group_purchase.title }}">
+        </p>
+
+        <p>
+            본문 :
+            <textarea name="content" cols="30" rows="10">{{ update_group_purchase.content }}</textarea>
+        </p>
+
+        <p>
+            상품명 :
+            <input type="text" name="item_name" value="{{ update_group_purchase.item_name }}">
+        </p>
+
+        <p>
+            가격 :
+            <input type="number" name="price" value="{{ update_group_purchase.price }}">
+        </p>
+
+        <p>
+            최대 인원 :
+            <input type="number" name="max_participants" value="{{ update_group_purchase.max_participants }}">
+        </p>
+
+        <p>
+            위치 :
+            <input type="text" name="location" value="{{ update_group_purchase.location }}">
+        </p>
+
+        <button type="submit">수정하기</button>
+    </form>
+
+</body>
+</html>
