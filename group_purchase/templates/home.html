@@ -1,8 +1,14 @@
-<a href="{%url 'group_purchase:new'%}">새글 작성</a>
-{% for post in posts.all %}
-<h3>{{post.title}}</h3>
-<br />
-{{post.created_at}}
-<br />
-{{post.content}}
+<a href="{% url 'group_purchase:new' user_id %}">새글 작성</a>
+
+{% for post in posts %}
+  <h3>
+    <!-- 클릭하면 세부 들어갈 수 있도록 -->
+    <a href="{% url 'group_purchase:detail' post.id user_id %}"> 
+      {{ post.title }}
+    </a>
+  </h3>
+  <br />
+  {{ post.created_at }}
+  <br />
+  {{ post.content }}
 {% endfor %}
