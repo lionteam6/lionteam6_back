@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ post.title }} - 상세 보기</title>
     <style>
-      /* --- 스타일링 (전체 합본) --- */
       * {
         box-sizing: border-box;
         margin: 0;
@@ -20,7 +19,6 @@
         color: #111827;
       }
 
-      /* 헤더 영역 */
       .page-header {
         width: 100%;
         height: 4rem;
@@ -42,7 +40,6 @@
         gap: 0.5rem;
       }
 
-      /* 메인 컨테이너 */
       main {
         display: flex;
         flex-direction: column;
@@ -50,7 +47,6 @@
         padding: 6rem 1rem;
       }
 
-      /* 게시물 카드 */
       article {
         width: 100%;
         max-width: 750px;
@@ -60,7 +56,6 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       }
 
-      /* 작성자 및 날짜 정보 */
       .article-header {
         display: flex;
         align-items: center;
@@ -82,25 +77,96 @@
 
       .post-meta p {
         font-size: 0.85rem;
-        color: #9ca3af; /* 날짜 색상 */
+        color: #9ca3af;
       }
 
-      /* 제목 및 본문 */
       .post-title {
         font-size: 2.25rem;
         font-weight: 800;
         margin-bottom: 1.5rem;
       }
 
+      .post-info {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background-color: #f3f4f6;
+        border-radius: 8px;
+        line-height: 1.8;
+      }
+
       .post-content {
         font-size: 1.1rem;
         line-height: 1.7;
         color: #4b5563;
-        white-space: pre-wrap; /* DB의 줄바꿈을 화면에 그대로 반영 */
+        white-space: pre-wrap;
         min-height: 150px;
       }
 
-      /* 하단 버튼 (수정/삭제) */
+      .participants-section {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #f9fafb;
+        border-radius: 8px;
+      }
+
+      .participants-section h3 {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .participants-section p {
+        margin-bottom: 0.75rem;
+        color: #374151;
+      }
+
+      .participants-section ul {
+        margin-top: 0.5rem;
+        padding-left: 1.2rem;
+      }
+
+      .participants-section li {
+        list-style: disc;
+        margin-bottom: 0.4rem;
+        color: #4b5563;
+      }
+
+      .join-actions {
+        margin-top: 1rem;
+      }
+
+      .join-actions a {
+        display: inline-block;
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .btn-join {
+        background-color: #dbeafe;
+        color: #2563eb;
+      }
+
+      .btn-leave {
+        background-color: #fee2e2;
+        color: #dc2626;
+      }
+
+      .btn-home {
+        background: #f3f4f6;
+        color: #4b5563;
+      }
+
+      .btn-edit {
+        background: #f3f4f6;
+        color: #4b5563;
+      }
+
+      .btn-delete {
+        background: #fee2e2;
+        color: #ef4444;
+      }
+
       .post-footer {
         margin-top: 3rem;
         padding-top: 1.5rem;
@@ -110,17 +176,16 @@
         gap: 0.75rem;
       }
 
-      .btn {
+      .post-footer a {
         padding: 0.5rem 1rem;
         border-radius: 6px;
         font-size: 0.9rem;
         font-weight: 600;
       }
 
-      .btn-edit { background: #f3f4f6; color: #4b5563; }
-      .btn-delete { background: #fee2e2; color: #ef4444; }
-      
-      .btn:hover { opacity: 0.8; }
+      a:hover {
+        opacity: 0.8;
+      }
     </style>
   </head>
   <body>
@@ -133,21 +198,58 @@
         <header class="article-header">
           <div class="profile-circle"></div>
           <div class="post-meta">
-            <h3>익명 사용자</h3>
+            <h3>{{ post.user.user_name }}</h3>
             <p>{{ post.created_at|date:"Y.m.d H:i" }}</p>
           </div>
         </header>
 
         <h1 class="post-title">{{ post.title }}</h1>
 
+        <div class="post-info">
+          <p><strong>공구 품목:</strong> {{ post.item_name }}</p>
+          <p><strong>가격:</strong> {{ post.price }}원</p>
+          <p><strong>모집 인원:</strong> {{ post.participants.count }} / {{ post.max_participants }}</p>
+          <p><strong>장소:</strong> {{ post.location }}</p>
+        </div>
+
         <div class="post-content">
           {{ post.content }}
         </div>
 
+        <section class="participants-section">
+          <h3>참여자 목록</h3>
+
+          <ul>
+            {% for participant in post.participants.all %}
+              <li>{{ participant.user_name }}</li>
+            {% empty %}
+              <li>아직 참여자가 없습니다.</li>
+            {% endfor %}
+          </ul>
+
+          <div class="join-actions">
+            {% if is_author %}
+              <p>내가 작성한 공구입니다.</p>
+            {% else %}
+              {% if is_participant %}
+                <a class="btn-leave" href="{% url 'group_purchase:leave_post' post.id current_user.id %}">
+                  참여 취소
+                </a>
+              {% else %}
+                <a class="btn-join" href="{% url 'group_purchase:join_post' post.id current_user.id %}">
+                  참여하기
+                </a>
+              {% endif %}
+            {% endif %}
+          </div>
+        </section>
+
         <footer class="post-footer">
-          <a href="{% url 'group_purchase:update_page' post.id %}">수정하기</a>
-          <a href="{% url 'group_purchase:delete' post.id %}">삭제하기</a>
-          <a href="{% url 'group_purchase:home' %}">목록으로</a>
+          {% if is_author %}
+            <a class="btn-edit" href="{% url 'group_purchase:update_page' post.id %}">수정하기</a>
+            <a class="btn-delete" href="{% url 'group_purchase:delete' post.id %}">삭제하기</a>
+          {% endif %}
+          <a class="btn-home" href="{% url 'group_purchase:home' %}">목록으로</a>
         </footer>
       </article>
     </main>
