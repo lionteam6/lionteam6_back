@@ -12,6 +12,7 @@ class Post(models.Model):
   user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE) #작성자 필드 (1:N)
   title = models.CharField(max_length=50)
   created_at = models.DateTimeField(auto_now_add=True)
+  photo = models.ImageField(blank=True, null=True, upload_to="post_photo")
   content = models.TextField(max_length=500)
   
   #추가 필드

@@ -216,6 +216,10 @@
           {{ post.content }}
         </div>
 
+        {% if post.photo %}
+        <img src="{{ post.photo.url }}" alt="" height="400px;">
+        {% endif %}
+
         <section class="participants-section">
           <h3>참여자 목록</h3>
 

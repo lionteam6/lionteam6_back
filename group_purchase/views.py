@@ -19,11 +19,11 @@ def detail(request, post_id, user_id):
 
   return render(request, 'detail.html', {'post': post_detail, 'current_user': current_user, 'is_participant': is_participant, 'is_author': is_author,})
 
-def new(request, user_id) :
+def new(request, user_id) : #빈 작성 폼 보여주는 함수 (URL에서 user_id 받아서 html로 넘김)
   form=PostForm()
   return render(request, 'new.html', {'form' : form, 'user_id' : user_id})
 
-def create(request, user_id) :
+def create(request, user_id) : 
   user = get_object_or_404(User, pk = user_id)
 
   if request.method == 'POST':
