@@ -102,6 +102,12 @@
         min-height: 150px;
       }
 
+      .post-image {
+        margin-top: 1.5rem;
+        max-width: 100%;
+        border-radius: 10px;
+      }
+
       .participants-section {
         margin-top: 2rem;
         padding: 1.5rem;
@@ -198,7 +204,7 @@
         <header class="article-header">
           <div class="profile-circle"></div>
           <div class="post-meta">
-            <h3>{{ post.user.user_name }}</h3>
+            <h3>{{ post.user.nickname }}</h3>
             <p>{{ post.created_at|date:"Y.m.d H:i" }}</p>
           </div>
         </header>
@@ -217,7 +223,7 @@
         </div>
 
         {% if post.photo %}
-        <img src="{{ post.photo.url }}" alt="" height="400px;">
+          <img class="post-image" src="{{ post.photo.url }}" alt="게시글 이미지">
         {% endif %}
 
         <section class="participants-section">
@@ -225,25 +231,29 @@
 
           <ul>
             {% for participant in post.participants.all %}
-              <li>{{ participant.user_name }}</li>
+              <li>{{ participant.nickname }}</li>
             {% empty %}
               <li>아직 참여자가 없습니다.</li>
             {% endfor %}
           </ul>
 
           <div class="join-actions">
-            {% if is_author %}
-              <p>내가 작성한 공구입니다.</p>
-            {% else %}
-              {% if is_participant %}
-                <a class="btn-leave" href="{% url 'group_purchase:leave_post' post.id current_user.id %}">
+            {% if user.is_authenticated %}
+              {% if is_author %}
+                <p>내가 작성한 공구입니다.</p>
+              {% elif is_participant %}
+                <a class="btn-leave" href="{% url 'group_purchase:leave_post' post.id %}">
                   참여 취소
                 </a>
               {% else %}
-                <a class="btn-join" href="{% url 'group_purchase:join_post' post.id current_user.id %}">
+                <a class="btn-join" href="{% url 'group_purchase:join_post' post.id %}">
                   참여하기
                 </a>
               {% endif %}
+            {% else %}
+              <a class="btn-join" href="{% url 'accounts:login' %}">
+                로그인 후 참여 가능
+              </a>
             {% endif %}
           </div>
         </section>
