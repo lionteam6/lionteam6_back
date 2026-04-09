@@ -1,0 +1,20 @@
+from django.urls import path
+from .views import *
+
+app_name = 'group_purchase'
+
+urlpatterns = [
+    path('', home, name='home'),
+
+    path('post/<int:post_id>/', detail, name='detail'),
+
+    path('new/', new, name="new"),
+    path('create/', create, name="create"),
+
+    path('join/<int:post_id>/', join_post, name='join_post'),
+    path('leave/<int:post_id>/', leave_post, name='leave_post'),
+
+    path('delete/<int:post_id>/', delete, name="delete"),
+    path('update_page/<int:post_id>/', update_page, name="update_page"),
+    path('update_post/<int:post_id>/', update_post, name="update_post"),
+]

@@ -12,13 +12,17 @@
     {% block content %}
     <h1>게시글 작성하기</h1>
 
-    <form action="{% url 'group_purchase:create' user_id %}" method="post" enctype="multipart/form-data">
-
+    <form action="{% url 'group_purchase:create' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p}}
+        {{ form.as_p }}
+
+        {% if form.errors %}
+            <div style="color: red;">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
         <button type="submit">제출</button>
-        
-        
     </form>
     {% endblock %}
 </body>
