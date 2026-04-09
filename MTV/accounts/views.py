@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
-from accounts.forms import RegisterForm
+from lionteam6_back.MTV.accounts.forms import RegisterForm
 from django.contrib.auth import authenticate, login, logout
 
 def signup_view(request):
