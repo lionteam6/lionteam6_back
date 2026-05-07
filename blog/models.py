@@ -30,5 +30,6 @@ class Post(models.Model):
       return self.participants.count()
 
     #참여자 다 찼는지 확인하는 함수
+    #PR용
     def is_full(self):
       return self.participants.count() >= self.max_participants
