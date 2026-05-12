@@ -8,7 +8,10 @@ class Post(models.Model):
 
     title = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+    
     #사진필드
+    photo = models.ImageField(blank=True, null=True, upload_to="post_photo")
+
     content = models.TextField(max_length=500)
 
     item_name = models.CharField(max_length=100)
