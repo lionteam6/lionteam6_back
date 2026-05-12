@@ -36,17 +36,18 @@ class UserLoginSerializer(serializers.Serializer):
         if User.objects.filter(username=username).exists():
             user = User.objects.get(username=username)
 
-            if not user.check_password(password):
+            if not user.check_password(password): 
                 raise serializers.ValidationError()
 
             else:
                 token = RefreshToken.for_user(user)
                 refresh = str(token)
                 access = str(token.access_token)
+                #토큰까지 반환
                 return {
                     'id' : user.id,
                     'nickname' : user.nickname,
                     'university' : user.university,
-                    'access' : access,
+                    'access' : access,      
                     'refresh' : refresh
                 }
