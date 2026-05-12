@@ -7,7 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'author', 'title', 'content','item_name','price','max_participants', 'location', 'participants', 'participant_count', 'is_full')
+        fields = ('id', 'author', 'title', 'content','item_name','price','photo','max_participants', 'location', 'participants', 'participant_count', 'is_full')
     
     def get_participant_count(self, obj):
       return obj.participant_count()

@@ -4,8 +4,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Post
 from .serializers import PostSerializer
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.permissions import IsAuthenticated
 
 class PostListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+
     def get(self, request: HttpRequest, format=None):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
@@ -19,6 +26,10 @@ class PostListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class PostDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
     def get_object(self, pk):
         try:
             return Post.objects.get(pk=pk)

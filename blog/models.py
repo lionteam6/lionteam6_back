@@ -8,7 +8,10 @@ class Post(models.Model):
 
     title = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+    
     #사진필드
+    photo = models.ImageField(blank=True, null=True, upload_to="post_photo")
+
     content = models.TextField(max_length=500)
 
     item_name = models.CharField(max_length=100)
@@ -30,5 +33,6 @@ class Post(models.Model):
       return self.participants.count()
 
     #참여자 다 찼는지 확인하는 함수
+    #PR용
     def is_full(self):
       return self.participants.count() >= self.max_participants
